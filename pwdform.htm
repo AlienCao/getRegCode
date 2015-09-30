@@ -1,0 +1,98 @@
+<!--<?php
+defined('W_P') or exit('Forbidden');print <<<EOT
+-->
+<script type="text/javascript">
+$(function(){
+	$("#getRegCode").click(function(){
+		var telVal = $('#tel').val();
+		var time = 180;
+		$.ajax({
+			type:'POST',
+			data:{"tel":telVal,"action":"telCheck"},
+			dataType:'text',
+			url:'ajax.php',
+			success:function(data){
+				if(data == '1'){
+					$('#verCode').css("display","block");
+					$('#tel_error').attr("class","hidden");
+					$('#tel_notregister').attr("class","hidden");
+					$('#commitSub').attr("class","btn btn-default btn btn-primary btn-lg btn-block");
+					$('#ResTimeGetRegCode').attr("class","btn btn-default btn btn-primary btn-lg btn-block");
+					$('#getRegCode').attr("class","hidden");
+					setTimeout(function (){getTime()},1000)
+				}else{
+					$('#tel_notregister').attr("class","form-group");
+				}
+			},
+			error:function(){
+				alert('error');	
+			}
+		});
+		
+		function getTime(){
+			if(time == '0'){
+				var str = '重获验证码';
+				$('#ResTimeGetRegCode').attr("disabled","");
+			}else{
+				var str = time + '秒后重获验证码';
+				$('#ResTimeGetRegCode').attr("disabled","disabled");
+			}
+			$("#ResTimeGetRegCode").attr("value",str);
+			
+			time--;
+			setTimeout(function (){getTime()},1000)
+		}
+	});
+});
+</script>
+<div class="page_content  page_content_selfstyle">
+        <div class="tab-pane  active" id="email_sign_in_tab">
+            <form accept-charset="UTF-8" action="index.php?a=login" class="simple_form user" data-remote="true" method="post">
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            手机号码
+                        </span>
+                        <input autofocus="autofocus" class="form-control" id="tel" name="tel" placeholder="手机号码" required="required" type="text">
+                    </div>
+                </div>
+                <div class="form-group" style="display:none;" id="verCode">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            验证码
+                        </span>
+                        <input class="form-control" id="user_password" name="pwpwd" placeholder="验证码" required="required" type="text">
+                    </div>
+                </div>
+                <div class="form-group hidden" id="tel_error">
+                    <div class="form-result">
+                        <div class="alert alert-danger">
+                            请输入有效的手机号码
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group hidden" id="tel_notregister">
+                    <div class="form-result">
+                        <div class="alert alert-danger">
+                            您的手机号码还没有被注册过
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-action">
+                        <input class="btn btn-default btn btn-primary btn-lg btn-block" id="getRegCode" name="commit" type="button" value="获取验证码">
+                    </div>
+                    <div class="form-action">
+                        <input class="btn btn-default btn btn-primary btn-lg btn-block hidden" id="commitSub" name="commit" type="button" value="提交">
+                    </div>
+                    <div class="form-action">
+                        <input class="btn btn-default btn btn-primary btn-lg btn-block hidden" id="ResTimeGetRegCode" name="commit" type="button" value="重获验证码">
+                    </div>
+                </div>
+            </form>
+        </div>
+</div>
+</body></html>
+<!--
+EOT;
+?>-->
